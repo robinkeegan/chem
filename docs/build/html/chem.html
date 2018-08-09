@@ -1,0 +1,223 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>chem package &#8212; chem 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="chem" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="chem"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">chem 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">chem</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="chem-package">
+<h1>chem package<a class="headerlink" href="#chem-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-chem.ions">
+<span id="chem-ions-module"></span><h2>chem.ions module<a class="headerlink" href="#module-chem.ions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="chem.ions.chemical_properties">
+<code class="descclassname">chem.ions.</code><code class="descname">chemical_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem/ions.html#chemical_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chem.ions.chemical_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>A database function which contains chemical values</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="chem.ions.meq">
+<code class="descclassname">chem.ions.</code><code class="descname">meq</code><span class="sig-paren">(</span><em>array</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem/ions.html#meq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chem.ions.meq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from milligrams per litre to milli-equivilents per litre.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>array</strong> – A one dimensional array or two dimensional pandas dataframe     containing in mg/L in the order of ‘Ca’, ‘Mg’, ‘Na’, ‘K’, ‘HCO3’, ‘CO3’,     ‘Cl’, ‘SO4’</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The input array in meq/L</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="chem.ions.schoeller">
+<code class="descclassname">chem.ions.</code><code class="descname">schoeller</code><span class="sig-paren">(</span><em>array</em>, <em>labels=None</em>, <em>show=True</em>, <em>save=False</em>, <em>fname=None</em>, <em>figsize=(4</em>, <em>6)</em>, <em>cmap='tab20'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem/ions.html#schoeller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chem.ions.schoeller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Schoeller diagram.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>array</strong> – A one dimensional array or pandas dataframe containing in     meq/L in the order of ‘Ca’, ‘Mg’, ‘Na’, ‘K’, ‘HCO3’, ‘CO3’, ‘Cl’, ‘SO4’</li>
+<li><strong>labels</strong> – If a pandas datframe include labels for each row as an array.</li>
+<li><strong>show</strong> – If True shows plot else returns plot object.</li>
+<li><strong>Save</strong> – save the plot default is False</li>
+<li><strong>fname</strong> – filename default is none</li>
+<li><strong>figsize</strong> – figure size tuple default (4, 6)</li>
+<li><strong>cmap</strong> – the colourmap default is “tab 20”</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A schoeller digram of the data</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-chem.piper">
+<span id="chem-piper-module"></span><h2>chem.piper module<a class="headerlink" href="#module-chem.piper" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="chem.piper.piper">
+<code class="descclassname">chem.piper.</code><code class="descname">piper</code><span class="sig-paren">(</span><em>dat_piper</em>, <em>alphalevel=1</em>, <em>color=True</em>, <em>save=False</em>, <em>fname=None</em>, <em>figsize=(4</em>, <em>4)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chem/piper.html#piper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chem.piper.piper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Piper plot using the code by Peeters, (2014).</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dat_piper</strong> – [nx8] matrix, chemical analysis in mg/L order: Ca Mg Na K HCO3 CO3 Cl SO4</li>
+<li><strong>alphalevel</strong> – transparency level of points. If 1, points are opaque</li>
+<li><strong>color</strong> – boolean, use background coloring of Piper plot default True</li>
+<li><strong>save</strong> – Save or not default not</li>
+<li><strong>figsize</strong> – tuple figure size (default (4, 4))</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">piperplot</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Code from <a class="reference external" href="https://github.com/inkenbrandt/Peeters_Piper/blob/master/peeter_piper.py">https://github.com/inkenbrandt/Peeters_Piper/blob/master/peeter_piper.py</a>:</p>
+<p>Citation:</p>
+<p>&#64;article {GWAT:GWAT12118,
+author = {Peeters, Luk},
+title = {A Background Color Scheme for Piper Plots to Spatially Visualize Hydrochemical Patterns},
+journal = {Groundwater},
+volume = {52},
+number = {1},
+publisher = {Blackwell Publishing Ltd},
+issn = {1745-6584},
+url = {http://dx.doi.org/10.1111/gwat.12118},
+doi = {10.1111/gwat.12118},
+pages = {2–6},
+year = {2014},
+}</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-chem">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-chem" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">chem package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-chem.ions">chem.ions module</a></li>
+<li><a class="reference internal" href="#module-chem.piper">chem.piper module</a></li>
+<li><a class="reference internal" href="#module-chem">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">chem</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">License</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/chem.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="chem"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">chem 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >chem</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Robin Keegan-Treloar.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>
