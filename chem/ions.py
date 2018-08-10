@@ -96,7 +96,7 @@ def schoeller(array, labels=None, show=True, save=False, fname=None, figsize=(6,
             module_io.output(f, show, save, fname)
 
 
-def chloride_vs_stable_isotopes(chloride, d18O, d2H, show=True, save=False, fname=None, figsize=(8, 3)):
+def chloride_vs_stable_isotopes(chloride, d18O, d2H, groupby=False, labels=None, show=True, save=False, fname=None, figsize=(8, 3)):
     '''
     Plot stable isotopes vs chloride.
 
@@ -105,6 +105,9 @@ def chloride_vs_stable_isotopes(chloride, d18O, d2H, show=True, save=False, fnam
     :param chloride: A one dimensional array containing chloride in mM/L
     :param d18O: A one dimensional array containing d18O in VSMOW.
     :param d2H: A one dimensional array containing d2H in VSMOW.
+    :param groupby: If the data is catagorical change groupby to True default \
+    is False. Note is groupby is True labels must be defined.
+    :param labels: A one dimensional array of labels for each sample.
     :param show: If True shows plot else returns plot object.
     :param save: Save the plot default is False
     :param fname: Filename default is none
@@ -114,17 +117,32 @@ def chloride_vs_stable_isotopes(chloride, d18O, d2H, show=True, save=False, fnam
     hsv = plt.get_cmap("tab20")
     colors = hsv(np.linspace(0, 1.0, 20))
     f, (ax1, ax2) = plt.subplots(1, 2, sharey=False, figsize=figsize)
-    ax1.scatter(chloride, d2H, c=colors[0])
-    ax1.set_ylabel("$\delta 2 H$")
-    ax1.set_xlabel("Cl (mM/L)")
-    ax2.scatter(chloride, d18O, c=colors[2])
-    ax2.set_ylabel("$\delta 18O")
-    ax2.set_xlabel("Cl (mM/L)")
+
+    def plot(chloride, d2H, d18O, color, label=""):
+        ax1.scatter(chloride, d2H, c=color, label=label)
+        ax1.set_ylabel("$\delta 2 H$")
+        ax1.set_xlabel("Cl (mM/L)")
+        ax2.scatter(chloride, d18O, c=color, label=label)
+        ax2.set_ylabel("$\delta 18O$")
+        ax2.set_xlabel("Cl (mM/L)")
+
+    if groupby is False:
+        plot(chloride, d2H, d18O, colors[0])
+    elif groupby is True:
+        groups = np.unique(labels)
+        colors = hsv(np.linspace(0, 1.0, len(groups)))
+        for i in range(len(groups)):
+            mask = labels == groups[i]
+            plot(chloride[mask], d2H[mask], d18O[mask], colors[i], label=str(groups[i]))
+        ax1.legend()
+        ax2.legend()
+
     plt.tight_layout()
+    plt.show()
     module_io.output(f, show, save, fname)
 
 
-def chloride_ion_ratios(array, show=True, save=False, fname=None, figsize=(6, 6)):
+def chloride_ion_ratios(array, groupby=False, labels=None, show=True, save=False, fname=None, figsize=(8, 6)):
     '''
     Plot chloride vs major ion ratios.
 
@@ -132,6 +150,9 @@ def chloride_ion_ratios(array, show=True, save=False, fname=None, figsize=(6, 6)
 
     :param array: A one or two dimensional array containing in mM/L in the order of \
     'Ca', 'Mg', 'Na', 'K', 'HCO3', 'CO3', 'Cl', 'SO4'.
+    :param groupby: If the data is catagorical change groupby to True default \
+    is False. Note is groupby is True labels must be defined.
+    :param labels: A one dimensional array of labels for each sample.
     :param show: If True shows plot else returns plot object.
     :param save: Save the plot default is False
     :param fname: Filename default is none
@@ -143,20 +164,33 @@ def chloride_ion_ratios(array, show=True, save=False, fname=None, figsize=(6, 6)
         array = np.concatenate((array, array)).reshape(2, 8)
     hsv = plt.get_cmap("tab20")
     colors = hsv(np.linspace(0, 1.0, 20))
-    f, axes = plt.subplots(3, 2, sharex=True, figsize=(6, 6))
-    axes[0, 0].scatter(array[:, 6], array[:, 0] / array[:, 6], c=colors[0])
-    axes[0, 0].set_ylabel("Ca/Cl")
-    axes[1, 0].scatter(array[:, 6], array[:, 1] / array[:, 6], c=colors[1])
-    axes[1, 0].set_ylabel("Mg/Cl")
-    axes[2, 0].scatter(array[:, 6], array[:, 2] / array[:, 6], c=colors[2])
-    axes[2, 0].set_ylabel("Na/Cl")
-    axes[0, 1].scatter(array[:, 6], array[:, 3] / array[:, 6], c=colors[3])
-    axes[0, 1].set_ylabel("K/Cl")
-    axes[1, 1].scatter(array[:, 6], array[:, 4] / array[:, 6], c=colors[4])
-    axes[1, 1].set_ylabel("HCO3/Cl")
-    axes[2, 1].scatter(array[:, 6], array[:, 7] / array[:, 6], c=colors[5])
-    axes[2, 1].set_ylabel("SO4/Cl")
-    axes[2, 0].set_xlabel("Cl (mM/L)")
-    axes[2, 1].set_xlabel("Cl (mM/L)")
+    f, axes = plt.subplots(3, 2, sharex=True, figsize=figsize)
+
+    def plot(array, color, label=''):
+        axes[0, 0].scatter(array[:, 6], array[:, 0] / array[:, 6], c=color)
+        axes[0, 0].set_ylabel("Ca/Cl")
+        axes[1, 0].scatter(array[:, 6], array[:, 1] / array[:, 6], c=color)
+        axes[1, 0].set_ylabel("Mg/Cl")
+        axes[2, 0].scatter(array[:, 6], array[:, 2] / array[:, 6], c=color)
+        axes[2, 0].set_ylabel("Na/Cl")
+        axes[0, 1].scatter(array[:, 6], array[:, 3] / array[:, 6], c=color)
+        axes[0, 1].set_ylabel("K/Cl")
+        axes[1, 1].scatter(array[:, 6], array[:, 4] / array[:, 6], c=color, label=label)
+        axes[1, 1].set_ylabel("HCO3/Cl")
+        axes[2, 1].scatter(array[:, 6], array[:, 7] / array[:, 6], c=color)
+        axes[2, 1].set_ylabel("SO4/Cl")
+        axes[2, 0].set_xlabel("Cl (mM/L)")
+        axes[2, 1].set_xlabel("Cl (mM/L)")
+
+    if groupby is False:
+        plot(array, colors[0])
+    elif groupby is True:
+        groups = np.unique(labels)
+        colors = hsv(np.linspace(0, 1.0, len(groups)))
+        for i in range(len(groups)):
+            mask = labels == groups[i]
+            plot(array[mask], colors[i], label=str(groups[i]))
+        axes[1, 1].legend(loc='center left', bbox_to_anchor=(1, 0.5), title="Legend")
+
     plt.tight_layout()
     module_io.output(f, show, save, fname)
