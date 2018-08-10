@@ -1,21 +1,24 @@
-# Load required packages
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import module_io
 
 
-def piper(dat_piper, alphalevel=1, color=True, save=False, fname=None, figsize=(4, 4)):
+def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, figsize=(4, 4)):
     '''
     Create a Piper plot using the code by Peeters, (2014).
 
     Args:
 
-    :param dat_piper: [nx8] matrix, chemical analysis in mg/L order: Ca Mg Na K HCO3 CO3 Cl SO4
+    :param array: A one or two dimensional array containing in mM/L in the order of \
+    'Ca', 'Mg', 'Na', 'K', 'HCO3', 'CO3', 'Cl', 'SO4'.
     :param alphalevel: transparency level of points. If 1, points are opaque
     :param color: boolean, use background coloring of Piper plot default True
-    :param save: Save or not default not
-    :param figsize: tuple figure size (default (4, 4))
-    :return: piperplot
+    :param show: If True shows plot else returns plot object.
+    :param save: Save the plot default is False
+    :param fname: Filename default is none
+    :param figsize: Figure size tuple default (8, 3)
+    :return: Piperplot
 
     Code from https://github.com/inkenbrandt/Peeters_Piper/blob/master/peeter_piper.py:
 
@@ -35,9 +38,10 @@ def piper(dat_piper, alphalevel=1, color=True, save=False, fname=None, figsize=(
     year = {2014},
     }
     '''
+    dat_piper = array
     ndims = len(dat_piper.shape)
-    if ndims != 2:
-        raise NotImplementedError("Currently this only supports 2 dimensional data structures")
+    if ndims == 1:
+        dat_piper = np.concatenate((dat_piper, dat_piper)).reshape(2, 8)
 
     def hsvtorgb(H, S, V):
         # conversion (from http://en.wikipedia.org/wiki/HSL_and_HSV)
@@ -242,10 +246,4 @@ def piper(dat_piper, alphalevel=1, color=True, save=False, fname=None, figsize=(
         cat = np.vstack((hsvtorgb(hcat, scat, v))).T
         an = np.vstack((hsvtorgb(han,  san, v))).T
         d = np.vstack((hsvtorgb(hd,   sd, v))).T
-        if save == True:
-            plt.savefig(fname)
-        elif save == False:
-            plt.show()
-        return(dict(cat=cat,
-                    an=an,
-                    diamond=d))
+        module_io.output(fig, show, save, fname)
