@@ -103,8 +103,8 @@ def chloride_vs_stable_isotopes(chloride, d18O, d2H, show=True, save=False, fnam
     Args:
 
     :param chloride: A one dimensional array containing chloride in mM/L
-    :param d18O: A one dimensional array containing d18O in ‰ VSMOW.
-    :param d2H: A one dimensional array containing d2H in ‰ VSMOW.
+    :param d18O: A one dimensional array containing d18O in VSMOW.
+    :param d2H: A one dimensional array containing d2H in VSMOW.
     :param show: If True shows plot else returns plot object.
     :param save: Save the plot default is False
     :param fname: Filename default is none
@@ -115,10 +115,10 @@ def chloride_vs_stable_isotopes(chloride, d18O, d2H, show=True, save=False, fnam
     colors = hsv(np.linspace(0, 1.0, 20))
     f, (ax1, ax2) = plt.subplots(1, 2, sharey=False, figsize=figsize)
     ax1.scatter(chloride, d2H, c=colors[0])
-    ax1.set_ylabel("$\delta 2 H \ (‰  \ VSMOW)$")
+    ax1.set_ylabel("$\delta 2 H$")
     ax1.set_xlabel("Cl (mM/L)")
     ax2.scatter(chloride, d18O, c=colors[2])
-    ax2.set_ylabel("$\delta 18O \ (‰  \ VSMOW)$")
+    ax2.set_ylabel("$\delta 18O")
     ax2.set_xlabel("Cl (mM/L)")
     plt.tight_layout()
     module_io.output(f, show, save, fname)

@@ -12,6 +12,14 @@ chem.ions module
     :undoc-members:
     :show-inheritance:
 
+chem.module\_io module
+----------------------
+
+.. automodule:: chem.module_io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 chem.piper module
 -----------------
 
