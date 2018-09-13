@@ -9,7 +9,9 @@ def chemical_properties():
     '''
     names = np.array(['Ca', 'Mg', 'Na', 'K', 'HCO3', 'CO3', 'Cl', 'SO4'])
     valance = np.array([2, 2, 1, 1, -1, -2, -1, -2])
-    mass = np.array([40.078, 24.305, 22.989769, 39.0983, 61.0168, 60.01, 35.453, 96.06])
+    mass = np.array([
+        40.078, 24.305, 22.989769, 39.0983, 61.0168, 60.01, 35.453, 96.06
+    ])
     return names, valance, mass
 
 
@@ -23,9 +25,9 @@ def output(figure, show, save, fname):
     :param fname: File name to save the plot default is None.
     :returns: Either  ave, show, or return plot object.
     '''
-    if show == True and save == False:
+    if show is True and save is False:
         plt.show()
-    elif save == True:
+    elif save is True:
         plt.savefig(fname)
-    elif show == False and save == False:
+    elif show is False and save is False:
         return figure

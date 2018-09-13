@@ -1,17 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import module_io
+from chem import module_io
 
 
-def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, figsize=(4, 4)):
-    '''
+def piper(
+    array, alphalevel=1, color=True, show=True, save=False, fname=None,
+    figsize=(4, 4)
+):
+    r"""
     Create a Piper plot using the code by Peeters, (2014).
 
     Args:
 
-    :param array: A one or two dimensional array containing in mM/L in the order of \
-    'Ca', 'Mg', 'Na', 'K', 'HCO3', 'CO3', 'Cl', 'SO4'.
+    :param array: A one or two dimensional array containing in mM/L in the \
+    order of 'Ca', 'Mg', 'Na', 'K', 'HCO3', 'CO3', 'Cl', 'SO4'.
     :param alphalevel: transparency level of points. If 1, points are opaque
     :param color: boolean, use background coloring of Piper plot default True
     :param show: If True shows plot else returns plot object.
@@ -20,13 +23,15 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
     :param figsize: Figure size tuple default (8, 3)
     :return: Piperplot
 
-    Code from https://github.com/inkenbrandt/Peeters_Piper/blob/master/peeter_piper.py:
+    Code from https://github.com/inkenbrandt/Peeters_Piper/blob/master/peeter_\
+    piper.py:
 
     Citation:
 
     @article {GWAT:GWAT12118,
     author = {Peeters, Luk},
-    title = {A Background Color Scheme for Piper Plots to Spatially Visualize Hydrochemical Patterns},
+    title = {A Background Color Scheme for Piper Plots to Spatially Visualize \
+    Hydrochemical Patterns},
     journal = {Groundwater},
     volume = {52},
     number = {1},
@@ -37,7 +42,7 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
     pages = {2--6},
     year = {2014},
     }
-    '''
+    """
     dat_piper = array
     ndims = len(dat_piper.shape)
     if ndims == 1:
@@ -97,7 +102,9 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
     diamond_x = np.array([0.5, 1, 1.5, 1, 0.5]) + offset
     diamond_y = h*(np.array([1, 2, 1, 0, 1])) + (offset*np.tan(np.pi/3))
     fig = plt.figure(figsize=figsize)
-    ax = fig.add_subplot(111, aspect='equal', frameon=False, xticks=[], yticks=[])
+    ax = fig.add_subplot(
+        111, aspect='equal', frameon=False, xticks=[], yticks=[]
+    )
     ax.plot(ltriangle_x, ltriangle_y, '-k')
     ax.plot(rtriangle_x, rtriangle_y, '-k')
     ax.plot(diamond_x, diamond_y, '-k')
@@ -116,7 +123,10 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
              horizontalalignment='right', verticalalignment='center')
 
     # Convert chemistry into plot coordinates
-    gmol = np.array([40.078, 24.305, 22.989768, 39.0983, 61.01714, 60.0092, 35.4527, 96.0636])
+    gmol = np.array([
+        40.078, 24.305, 22.989768, 39.0983, 61.01714, 60.0092, 35.4527,
+        96.0636
+    ])
     eqmol = np.array([2., 2., 1., 1., 1., 2., 1., 2.])
     n = dat_piper.shape[0]
     meqL = (dat_piper / gmol) * eqmol
@@ -145,7 +155,7 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
     plt.plot(d_x,     d_y, '.k', alpha=alphalevel)
 
     # color coding Piper plot
-    if color == False:
+    if color is False:
         # add density color bar if alphalevel < 1
         if alphalevel < 1.0:
             ax1 = fig.add_axes([0.75, 0.4, 0.01, 0.2])
@@ -163,8 +173,12 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
         # create empty grids to interpolate to
         x0 = 0.5
         y0 = x0 * np.tan(np.pi/6)
-        X = np.reshape(np.repeat(np.linspace(0, 2+2*offset, 1000), 1000), (1000, 1000), 'F')
-        Y = np.reshape(np.repeat(np.linspace(0, 2*h + offsety, 1000), 1000), (1000, 1000), 'C')
+        X = np.reshape(np.repeat(
+            np.linspace(0, 2+2*offset, 1000), 1000), (1000, 1000), 'F'
+        )
+        Y = np.reshape(np.repeat(
+            np.linspace(0, 2*h + offsety, 1000), 1000), (1000, 1000), 'C'
+        )
         H = np.nan * np.zeros_like(X)
         S = np.nan * np.zeros_like(X)
         V = np.nan * np.ones_like(X)
@@ -172,25 +186,46 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
         # create masks for cation, anion triangle and upper and lower diamond
         ind_cat = np.logical_or(np.logical_and(X < 0.5, Y < 2*h*X),
                                 np.logical_and(X > 0.5, Y < (2*h*(1-X))))
-        ind_an = np.logical_or(np.logical_and(X < 1.5+(2*offset), Y < 2*h*(X-1-2*offset)),
-                               np.logical_and(X > 1.5+(2*offset), Y < (2*h*(1-(X-1-2*offset)))))
-        ind_ld = np.logical_and(np.logical_or(np.logical_and(X < 1.0+offset, Y > -2*h*X + 2*h*(1 + 2*offset)),
-                                              np.logical_and(X > 1.0+offset, Y > 2*h*X - 2*h)),
-                                Y < h+offsety)
-        ind_ud = np.logical_and(np.logical_or(np.logical_and(X < 1.0+offset, Y < 2*h*X),
-                                              np.logical_and(X > 1.0+offset, Y < -2*h*X + 4*h*(1+offset))),
-                                Y > h+offsety)
+        ind_an = np.logical_or(
+            np.logical_and(
+                X < 1.5+(2*offset),
+                Y < 2*h*(X-1-2*offset)
+            ),
+            np.logical_and(
+                X > 1.5+(2*offset),
+                Y < (2*h*(1-(X-1-2*offset)))
+            )
+        )
+        ind_ld = np.logical_and(
+            np.logical_or(
+                np.logical_and(
+                    X < 1.0+offset, Y > -2*h*X + 2*h*(1 + 2*offset)
+                ),
+                np.logical_and(
+                    X > 1.0+offset, Y > 2*h*X - 2*h)), Y < h+offsety
+        )
+        ind_ud = np.logical_and(
+            np.logical_or(
+                np.logical_and(X < 1.0+offset, Y < 2*h*X),
+                np.logical_and(
+                    X > 1.0+offset,
+                    Y < -2*h*X + 4*h*(1+offset))), Y > h+offsety
+        )
         ind_d = np.logical_or(ind_ld == 1, ind_ud == 1)
 
         # Hue: convert x,y to polar coordinates
         # (angle between 0,0 to x0,y0 and x,y to x0,y0)
         H[ind_cat] = np.pi + np.arctan2(Y[ind_cat]-y0, X[ind_cat]-x0)
         H[ind_cat] = np.mod(H[ind_cat]-np.pi/6, 2*np.pi)
-        H[ind_an] = np.pi + np.arctan2(Y[ind_an]-y0, X[ind_an] - (x0+1+(2*offset)))
+        H[ind_an] = np.pi + np.arctan2(
+            Y[ind_an]-y0, X[ind_an] - (x0+1+(2*offset))
+        )
         H[ind_an] = np.mod(H[ind_an]-np.pi/6, 2*np.pi)
-        H[ind_d] = np.pi + np.arctan2(Y[ind_d]-(h+offsety), X[ind_d]-(1+offset))
+        H[ind_d] = np.pi + np.arctan2(
+            Y[ind_d]-(h+offsety), X[ind_d]-(1+offset)
+        )
         # Saturation: 1 at edge of triangle, 0 in the centre,
-        # Clough Tocher interpolation, square root to reduce central white region
+        # Clough Tocher interpolation, square root to reduce central region
         xy_cat = np.array([[0.0, 0.0],
                            [x0,  h],
                            [1.0, 0.0],
@@ -239,11 +274,9 @@ def piper(array, alphalevel=1, color=True, show=True, save=False, fname=None, fi
         # saturation
         scat = s_cat.__call__(cat_x, cat_y)**0.5
         san = s_an.__call__(an_x,  an_y)**0.5
-        sd = s_d.__call__(d_x,   d_y)**0.5
         # value
         v = np.ones_like(hd)
         # rgb
         cat = np.vstack((hsvtorgb(hcat, scat, v))).T
         an = np.vstack((hsvtorgb(han,  san, v))).T
-        d = np.vstack((hsvtorgb(hd,   sd, v))).T
         module_io.output(fig, show, save, fname)
